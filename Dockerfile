@@ -1,8 +1,11 @@
-# Imagen base con Node y permisos root para instalar GDAL
-FROM node:20-alpine
+# Imagen base con Node y GDAL en Debian (no Alpine)
+FROM node:20-slim
 
-# Instalar GDAL (ogr2ogr)
-RUN apk add --no-cache gdal curl bash
+# Instalar GDAL (incluye ogr2ogr), curl y bash
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      gdal-bin python3-gdal curl bash && \
+    rm -rf /var/lib/apt/lists/*
 
 # Crear directorio de trabajo
 WORKDIR /app
